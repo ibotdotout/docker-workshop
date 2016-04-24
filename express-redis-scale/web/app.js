@@ -7,12 +7,9 @@ var client = redis.createClient('redis://redis');
 
 app.get('/count', function (req, res) {
 	client.get('viewCount', function(err, reply) {
-		res.send(reply)
-	});
-});
-
-app.get('/clear', function (req, res) {
-	client.set('viewCount', 0)
+		var now = Date.now() / 1000;
+		res.status(200).json( { val : reply, now: now });
+	})
 });
 
 app.get('/', function (req, res) {

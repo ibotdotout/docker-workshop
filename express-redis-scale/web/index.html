@@ -1,41 +1,90 @@
 <html>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.min.css">
+<style>
+#graph {
+    background-color: #eee;
+    width: 800px;
+    height: 400px;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1//jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.min.js"></script>
 <script>
-  var app=angular.module('refresh_div',[])
-  .controller('refresh_control',  function($scope, $http, $timeout, $location) {
-	var count = 0
-	var prev = 0
-    $scope.getData = function(){
-		$http.get('http://' + $location.host() + ':' + $location.port() + '/count')
-        .success(function(data, status, headers, config) {
-          // Your code here
-		  count = parseInt(data)	
-		  diff = count - prev	
-		  $scope.message='total: ' + count + ', inc rate: ' + diff
-		  prev = count
-        });
-    };
 
-    $scope.intervalFunction = function(){
-      $timeout(function() {
-        $scope.getData();
-        $scope.intervalFunction();
-      }, 500)
-    };
+var series = [];
+var points = []
+var graph = null;
 
-     $scope.intervalFunction();
+function refresh () {
+    $.ajax({ url: "count" }).done(function (data) {
+        series.push(data);
+        while (series.length < 250) {
+            data = JSON.parse(JSON.stringify(data));
+            data.now -= 1;
+            series.unshift(data);
+        }
+        while (series.length > 250) {
+            series.shift();
+        }
+        while (points.length > 0) {
+            points.pop();
+        }
+        var speed;
+        for (var i=0; i<series.length-1; i++) {
+            // Compute instantaneous speed
+            var s1 = series[i];
+            var s2 = series[i+1];
+            speed = (s2.val-s1.val)/(s2.now-s1.now);
+            points.push({ x: s2.now, y: speed });
+        }
 
-    $scope.clear = function(){
-		$http.get('http://' + $location.host() + ':' + $location.port() + '/clear')
-        .success(function(data, status, headers, config) {
-			console.log('clear')	
-		})
-	}
-  });
+		$("#speed").text("~" + speed.toFixed(1) + " val/second");
+
+        if (graph == null) {
+            graph = new Rickshaw.Graph({
+                renderer: "area",
+                stroke: true,
+                width: 800,
+                height: 400,
+                element: $("#graph")[0],
+                preserve: true,
+                series: [
+                    { name: "Val",
+                      color: "steelblue",
+                      data: points
+                    }
+                ]
+            });
+            graph.render();
+            var yAxis = new Rickshaw.Graph.Axis.Y({
+                graph: graph,
+                tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+                ticksTreatment: "glow"
+            });
+            yAxis.render();
+        } else {
+            graph.update();
+            $("text").css({
+                "font-size": "15px",
+                "font-weight": "normal",
+                "opacity": 0.5,
+            });
+        }
+    });
+}
+
+$(function () {
+    setInterval(refresh, 1000);
+});
+
 </script>
 <body>
 
- <div ng-app="refresh_div" ng-controller="refresh_control">
-	 {{message}} <br>
-      <input type="button" ng-click="clear()" value="clear">
-</div>
+<h1>Worker Inc Speed</h1>
+
+<div id="graph"></div>
+
+<h2>
+  Current mining speed: <span id="speed">-</span>
+</h2>
