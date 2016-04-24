@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - web
+    ports:
+      - "8080:80"
+    networks: 
+      - front
+
+  web:
+    build: .
+    depends_on:
+      - redis
+    networks:
+      - front
+      - back
+
+  redis:
+    image: redis
+    networks:
+      - back
+
+networks:
+  front:
+    driver: bridge
+  back:
+    driver: bridge
