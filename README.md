@@ -10,7 +10,9 @@ Docker Demo
 
 	$ docker-compose build
 	$ docker-compose up -d
+
 	$ open http://$DOCKER_IP:3000
+
 	$ docker-compose log
 	$ docker-compose ps
 	$ docker-compose stop
@@ -23,10 +25,13 @@ Docker Demo
 
 	```sh
 	$ export DOCKER_IP=192.168.99.100
+
 	$ docker-compose up -d
+
 	# should not found on port 3000, work on 8080
 	$ open http://$DOCKER_IP:3000
 	$ open http://$DOCKER_IP:8080
+
 	$ docker-compose exec nginx ping web
 	$ docker-compose exec nginx ping redis
 	$ docker-compose exec web ping nginx
@@ -41,8 +46,11 @@ Docker Demo
 
 	```sh
 	$ export DOCKER_IP=192.168.99.100
+
 	$ docker-compose up -d
-	# open http://$DOCKER_IP:3000
+
+	$ open http://$DOCKER_IP:3000
+
 	$ docker-compose scale worker=5
 	$ docker-compose scale worker=50
 	$ docker-compose scale worker=25
