@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  web:
+    extends:
+      file: common.yml
+      service: web
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+    driver: local
