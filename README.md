@@ -56,5 +56,21 @@ Docker Demo
 	$ docker-compose scale worker=25
 	```
 
+4. `express-tdd`
+
+	show tdd in `docker`
+
+	```sh
+	$ docker-compose build
+	$ docker-compose run --rm npm test
+
+	# edit file
+
+	$ docker-compose build
+	$ docker-compose run --rm npm test
+
+	# try mount volume
+	```
+
 ### References
 - [jpetazzo/orchestration-workshop](https://github.com/jpetazzo/orchestration-workshop) - [video](https://www.youtube.com/watch?v=qbIvUvwa6As)
