@@ -8,9 +8,10 @@ services:
 
   mongo:
     image: mongo:2
-    volumes:
-      - mongo-data:/data/db
+    command: mongod --smallfiles
+#     volumes:
+#       - mongo-data:/data/db
 
-volumes:
-  mongo-data:
-    driver: local
+# volumes:
+#   mongo-data:
+#     driver: local

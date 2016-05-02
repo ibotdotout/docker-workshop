@@ -1,4 +1,4 @@
-Docker Demo
+Docker Demo -  [Talks](http://dev.im-bot.com/talks/docker-psu/)
 ------
 
 1. `express-redis-simple`
@@ -20,7 +20,7 @@ Docker Demo
 	```
 
 2. `nginx-express-redis`
-	
+
 	show `docker-compose` network, `docker` port mapping
 
 	```sh
@@ -39,7 +39,7 @@ Docker Demo
 	$ docker-compose exec redis ping nginx
 	$ docker-compose exec redis ping web
 	```
-	
+
 3. `express-redis-scale`, Inspirations from [jpetazzo/dockercoins](https://github.com/jpetazzo/orchestration-workshop/tree/master/dockercoins)
 
 	show `docker-compose` scale
@@ -56,7 +56,46 @@ Docker Demo
 	$ docker-compose scale worker=25
 	```
 
-4. `express-tdd`
+4. `express-mongo`
+
+	show multi `docker-compose` file and `docker volume`
+
+	```sh
+	$ export DOCKER_IP=192.168.99.100
+	$ docker-compose up -d
+
+	# open http://$DOCKER_IP:3000
+	# add some tweets
+	# open http://$DOCKER_IP:3000/tweets
+
+	$ docker-compose stop
+	$ docker-compose rm
+
+	$ docker-compose up -d
+	# Is data still exist ?
+	# open http://$DOCKER_IP:3000/tweets
+
+	$ docker-compose stop
+	$ docker-compose rm
+	```
+
+	```sh
+	# try other compose
+	$ docker-compose -f mongo2.yml up -d
+
+	# open http://$DOCKER_IP:3000
+	# add some tweets
+	# open http://$DOCKER_IP:3000/tweets
+
+	$ docker-compose stop
+	$ docker-compose rm
+
+	$ docker-compose up -d
+	# Is data still exist ?
+	# open http://$DOCKER_IP:3000/tweets
+	```
+
+5. `express-tdd`
 
 	show tdd in `docker`
 
