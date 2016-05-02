@@ -7,11 +7,11 @@ app.get('/', function (req, res) {
 });
 
 app.get('/docker', function (req, res) {
-	res.send('hello')
+	res.send('Edit HERE')
 });
 
 app.get('/hi', function (req, res) {
-	res.send('hello')
+	res.send('Edit HERE')
 });
 
 app.listen(3000, function () {

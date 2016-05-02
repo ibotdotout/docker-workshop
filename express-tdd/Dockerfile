@@ -2,11 +2,7 @@ FROM mhart/alpine-node
 
 WORKDIR /app
 
-RUN npm install express
-
-RUN npm install mocha
-# require chai
-# require supertest
+RUN npm install express mocha chai supertest
 
 COPY . /app
 
