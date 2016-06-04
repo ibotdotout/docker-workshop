@@ -1,6 +1,14 @@
 Docker Demo -  [Talks](http://dev.im-bot.com/talks/docker-psu/)
 ------
 
+0. wordpress
+
+	show simple `docker-compose` and without `Dockerfile`
+
+	```sh
+	$ docker-compose up -d
+	```
+
 1. `express-redis-simple`
 
 	show simple `docker-compose`
