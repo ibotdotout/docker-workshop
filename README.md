@@ -1,4 +1,4 @@
-Docker Demo -  [Talks](http://dev.im-bot.com/talks/docker-psu/)
+Docker Demo -  [Slide](http://dev.im-bot.com/talks/docker-psu/), [Video-th](https://www.youtube.com/watch?v=L9rLdRYUTY4)
 ------
 
 0. wordpress
